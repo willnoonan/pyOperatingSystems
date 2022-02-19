@@ -13,6 +13,7 @@ class Task:
     def __repr__(self):
         return f"(Name: {self.name}, Priority: {self.priority}, CPU Burst: {self.cpu_burst})"
 
+
 class Scheduler:
     def __init__(self, file):
         self.file = file
