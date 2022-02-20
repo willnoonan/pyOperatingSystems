@@ -2,6 +2,9 @@ from typing import List, overload
 import csv
 from collections import defaultdict, OrderedDict
 import itertools
+import argparse
+import sys
+
 
 
 class Task:
@@ -28,7 +31,7 @@ class Scheduler:
         tasksByPriority = defaultdict(list)
         for task in self.tasks_by_fcfs:
             tasksByPriority[task.priority].append(task)
-        sorted_tasks = [tasksByPriority[key] for key in sorted(tasksByPriority.keys())]
+        sorted_tasks = [tasksByPriority[key] for key in sorted(tasksByPriority.keys(), reverse=True)]
         self.tasks_by_priority = list(itertools.chain(*sorted_tasks))
 
     def printRoundRobinScheduling(self, quantum=3):
@@ -87,13 +90,21 @@ class Scheduler:
 
 
 def main():
-    lines = Scheduler.read_txt("schedule.txt")
-    for line in lines:
-        print(line)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("file")
+    parser.add_argument("-fcfs", action='store_true')
+    parser.add_argument("-priority", action='store_true')
+    args = parser.parse_args()
+
+    if len(sys.argv) > 2:
+        third_arg = sys.argv[2]
+        scheduler = Scheduler(args.file)
+        if args.fcfs and third_arg.startswith("-f"):
+            scheduler.printFCFSScheduling()
+        elif args.priority and third_arg.startswith("-p"):
+            scheduler.printPriorityScheduling()
+
 
 
 if __name__ == "__main__":
-    # print(Scheduler().getPriorityScheduling())
-    file = "schedule.txt"
-    schedule = Scheduler(file)
-    schedule.printRoundRobinScheduling(0)
+    main()
