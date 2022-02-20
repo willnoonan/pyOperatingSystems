@@ -3,7 +3,6 @@ import csv
 from collections import defaultdict, OrderedDict
 import itertools
 import argparse
-import sys
 
 
 
@@ -101,18 +100,26 @@ class Scheduler:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("file")
-    parser.add_argument("-fcfs", action='store_true')
-    parser.add_argument("-priority", action='store_true')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument("-fcfs", action='store_true')
+    group.add_argument("-priority", action='store_true')
+    group.add_argument("-rr", nargs="?", type=int, const=None, default=-1)
     args = parser.parse_args()
 
-    if len(sys.argv) > 2:
-        third_arg = sys.argv[2]
-        scheduler = Scheduler(args.file)
-        if args.fcfs and third_arg.startswith("-f"):
-            scheduler.printFCFSScheduling()
-        elif args.priority and third_arg.startswith("-p"):
-            scheduler.printPriorityScheduling()
 
+    scheduler = Scheduler(args.file)
+    if args.fcfs:
+        scheduler.printFCFSScheduling()
+    elif args.priority:
+        scheduler.printPriorityScheduling()
+    elif args.rr is None or args.rr > -1:
+        if args.rr is None:
+            scheduler.printRoundRobinScheduling()
+        else:
+            scheduler.printRoundRobinScheduling(args.rr)
+    else:
+        print("No args, displaying FCFS scheduling by default.")
+        scheduler.printFCFSScheduling()
 
 
 if __name__ == "__main__":
