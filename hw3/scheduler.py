@@ -43,7 +43,14 @@ class Scheduler:
         sorted_tasks = [tasksByPriority[key] for key in sorted(tasksByPriority.keys(), reverse=True)]
         self.tasks_by_priority = list(itertools.chain(*sorted_tasks))
 
-    def printRoundRobinScheduling(self, quantum=3):
+    def printRoundRobinScheduling(self, quantum=10):
+        """
+        Prints Round-robin scheduling. Default quantum is 10 milliseconds.
+
+        :param quantum:
+        :return:
+        """
+
         if quantum <= 0:
             raise ValueError("quantum must be > 0")
 
