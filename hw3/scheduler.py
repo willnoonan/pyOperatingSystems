@@ -8,16 +8,26 @@ import sys
 
 
 class Task:
+    """
+    This class represents a task.
+    """
     def __init__(self, name, priority, cpu_burst):
         self.name = name
         self.priority = priority
         self.cpu_burst = cpu_burst
 
     def __repr__(self):
+        """
+        Creates custom string representation of an instance of Task when print is called on it.
+        Useful for debugging.
+        """
         return f"(Name: {self.name}, Priority: {self.priority}, CPU Burst: {self.cpu_burst})"
 
 
 class Scheduler:
+    """
+    This class represents
+    """
     def __init__(self, file):
         self.file = file
         self._initialize_fcfs_tasks()
@@ -39,7 +49,6 @@ class Scheduler:
             raise ValueError("quantum must be > 0")
 
         tasks = [Task(task.name, None, task.cpu_burst) for task in self.tasks_by_fcfs]  # must make a copy
-
         num_complete = 0
         clock = 0
         print(clock)
