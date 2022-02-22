@@ -43,7 +43,7 @@ class Scheduler:
         sorted_tasks = [tasksByPriority[key] for key in sorted(tasksByPriority.keys(), reverse=True)]
         self.tasks_by_priority = list(itertools.chain(*sorted_tasks))
 
-    def printRoundRobinScheduling(self, quantum=10):
+    def printRoundRobinScheduling(self, quantum=10, priority=False):
         """
         Prints Round-robin scheduling. Default quantum is 10 milliseconds.
 
@@ -54,7 +54,11 @@ class Scheduler:
         if quantum <= 0:
             raise ValueError("quantum must be > 0")
 
-        tasks = [Task(task.name, None, task.cpu_burst) for task in self.tasks_by_fcfs]  # must make a copy
+        if priority:
+            tasks = [Task(task.name, None, task.cpu_burst) for task in self.tasks_by_priority]  # must make a copy
+        else:
+            tasks = [Task(task.name, None, task.cpu_burst) for task in self.tasks_by_fcfs]  # must make a copy
+
         num_complete = 0
         clock = 0
         print(clock)
@@ -111,6 +115,7 @@ def main():
     group.add_argument("-fcfs", action='store_true')
     group.add_argument("-priority", action='store_true')
     group.add_argument("-rr", nargs="?", type=int, const=None, default=-1)
+    group.add_argument("-rrp", nargs="?", type=int, const=None, default=-1)
     args = parser.parse_args()
 
 
@@ -124,6 +129,11 @@ def main():
             scheduler.printRoundRobinScheduling()
         else:
             scheduler.printRoundRobinScheduling(args.rr)
+    elif args.rrp is None or args.rrp > -1:
+        if args.rrp is None:
+            scheduler.printRoundRobinScheduling(priority=True)
+        else:
+            scheduler.printRoundRobinScheduling(args.rrp, priority=True)
     else:
         print("No args, displaying FCFS scheduling by default.")
         scheduler.printFCFSScheduling()
