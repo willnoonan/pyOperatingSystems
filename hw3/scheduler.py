@@ -31,18 +31,26 @@ class Task:
 
 class Scheduler:
     """
-    This class represents
+    This class represents various schedules for a list of tasks.
     """
     def __init__(self, file):
         self.file = file
-        self._initialize_fcfs_tasks()
+        self._initialize_fcfs_tasks()  # must be called before priority task initializer
         self._intialize_priority_tasks()
 
     def _initialize_fcfs_tasks(self):
+        """
+        Initializes list of tasks according to FCFS scheduling.
+        :return:
+        """
         lines = self.read_txt(self.file)
         self.tasks_by_fcfs = [Task(*line) for line in lines]
 
     def _intialize_priority_tasks(self):
+        """
+        Initializes list of tasks ordered by priority.
+        :return:
+        """
         tasksByPriority = defaultdict(list)
         for task in self.tasks_by_fcfs:
             tasksByPriority[task.priority].append(task)
@@ -51,10 +59,11 @@ class Scheduler:
 
     def printRoundRobinScheduling(self, quantum=10, priority=False):
         """
-        Prints Round-robin scheduling. Default quantum is 10 milliseconds.
+        Prints Round-robin scheduling. Default quantum is 10 milliseconds. If priority is True,
+        the list of tasks sorted by priority is used, otherwise, fcfs.
 
-        :param quantum:
-        :return:
+        :param quantum: time quantum (milliseconds)
+        :return: None (prints)
         """
 
         if quantum <= 0:
@@ -71,6 +80,8 @@ class Scheduler:
         i = 0
         while num_complete < len(tasks):
             task = tasks[i]
+
+            # only print out tasks with remaining cpu burst
             if task.cpu_burst > 0:
                 print(f"| {task.name}")
                 if task.cpu_burst > quantum:
@@ -93,6 +104,11 @@ class Scheduler:
 
     @staticmethod
     def printSchedule(tasks):
+        """
+        Prints the schedule for a list of tasks according to example output in assignment description.
+        :param tasks:
+        :return:
+        """
         if not tasks:
             print("There are no tasks.")
             return
@@ -106,6 +122,11 @@ class Scheduler:
 
     @staticmethod
     def read_txt(file):
+        """
+        Reads the text file with task info.
+        :param file:
+        :return:
+        """
         lines = []
         with open(file) as f:
             for line in f.readlines():
@@ -115,6 +136,10 @@ class Scheduler:
 
 
 def main():
+    """
+    This function handles the command line args and calls the appropriate Scheduler method.
+    :return:
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("file")
     group = parser.add_mutually_exclusive_group()
