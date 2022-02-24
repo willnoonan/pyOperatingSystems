@@ -146,17 +146,19 @@ class Scheduler:
             print(clock)
 
     @staticmethod
-    def read_txt(file):
+    def read_txt(file: str) -> List[Tuple[str, int, int]]:
         """
         Reads the text file with task info.
-        :param file:
-        :return:
+        :param file: text file with task data
+        :return: list of tuples of task data
         """
         lines = []
         with open(file) as f:
             for line in f.readlines():
+                # remove leading and trailing whitespace, newlines, and then split
                 clean = line.strip().split(",")
-                lines.append([clean[0], int(clean[1]), int(clean[2])])
+                # append the separated data to lines, converting last two to int
+                lines.append((clean[0], int(clean[1]), int(clean[2])))
         return lines
 
 
