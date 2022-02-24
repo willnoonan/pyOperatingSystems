@@ -9,6 +9,23 @@ import argparse
 Author: William Noonan
         CSCI 5362 Operating Systems
         CPU Scheduling Assignment
+        
+        This is my Python implementation of the scheduling algorithms, which I put all of
+        into one class called Scheduler.
+        
+        Usage:
+            python Scheduler.py <schedule> <algorithm>
+         
+        where 
+            schedule is schedule of tasks
+            algorithm = [-f, -p, -rr, -rrp]
+                -f is FCFS scheduling
+                -p is Priority scheduling
+                -rr is Round-robin scheduling
+                -rrp is Priority Round-robin scheduling
+                
+        See main() for CLI argument handling.
+        
 """
 
 
