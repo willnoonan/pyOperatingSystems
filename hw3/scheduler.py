@@ -83,16 +83,25 @@ class Scheduler:
 
             # only print out tasks with remaining cpu burst
             if task.cpu_burst > 0:
+
+                # update the clock time, add the smaller of quantum or current task burst time
+                clock += min(quantum, task.cpu_burst)
+
+                # print the task name and clock time
                 print(f"| {task.name}")
+                print(clock)
+
+                # update the task's burst time
                 if task.cpu_burst > quantum:
-                    clock += quantum
                     task.cpu_burst -= quantum
                 else:
-                    clock += task.cpu_burst
                     task.cpu_burst = 0
-                    if task.cpu_burst <= 0:
-                        num_complete += 1
-                print(clock)
+
+                # if the burst time hits zero, increment num_complete
+                if task.cpu_burst <= 0:
+                    num_complete += 1
+
+            # increment loop var ( it resets to zero once it hits len(tasks) )
             i = (i + 1) % len(tasks)
 
 
