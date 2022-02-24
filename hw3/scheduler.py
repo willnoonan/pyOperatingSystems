@@ -5,6 +5,12 @@ import itertools
 import argparse
 
 
+"""
+Author: William Noonan
+        CSCI 5362 Operating Systems
+        CPU Scheduling Assignment
+"""
+
 
 class Task:
     """
