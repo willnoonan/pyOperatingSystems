@@ -72,7 +72,7 @@ class Scheduler:
                     task.cpu_burst -= quantum
                 else:
                     clock += task.cpu_burst
-                    task.cpu_burst -= task.cpu_burst
+                    task.cpu_burst = 0
                     if task.cpu_burst <= 0:
                         num_complete += 1
                 print(clock)
